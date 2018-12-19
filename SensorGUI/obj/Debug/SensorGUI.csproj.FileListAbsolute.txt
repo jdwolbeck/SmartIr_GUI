@@ -8,3 +8,17 @@ C:\Projects\ECE_461\Sensor_Gui\SensorGUI\SensorGUI\obj\Debug\SensorGUI.csproj.Ge
 C:\Projects\ECE_461\Sensor_Gui\SensorGUI\SensorGUI\obj\Debug\SensorGUI.csproj.CoreCompileInputs.cache
 C:\Projects\ECE_461\Sensor_Gui\SensorGUI\SensorGUI\obj\Debug\SensorGUI.exe
 C:\Projects\ECE_461\Sensor_Gui\SensorGUI\SensorGUI\obj\Debug\SensorGUI.pdb
+C:\Projects\ECE_461\SensorGUI\SensorGUI\bin\Debug\SensorGUI.exe.config
+C:\Projects\ECE_461\SensorGUI\SensorGUI\bin\Debug\SensorGUI.exe
+C:\Projects\ECE_461\SensorGUI\SensorGUI\bin\Debug\SensorGUI.pdb
+C:\Projects\ECE_461\SensorGUI\SensorGUI\obj\Debug\SensorGUI.csprojAssemblyReference.cache
+C:\Projects\ECE_461\SensorGUI\SensorGUI\obj\Debug\SensorGUI.Form1.resources
+C:\Projects\ECE_461\SensorGUI\SensorGUI\obj\Debug\SensorGUI.Properties.Resources.resources
+C:\Projects\ECE_461\SensorGUI\SensorGUI\obj\Debug\SensorGUI.csproj.GenerateResource.cache
+C:\Projects\ECE_461\SensorGUI\SensorGUI\obj\Debug\SensorGUI.csproj.CoreCompileInputs.cache
+C:\Projects\ECE_461\SensorGUI\SensorGUI\obj\Debug\SensorGUI.exe
+C:\Projects\ECE_461\SensorGUI\SensorGUI\obj\Debug\SensorGUI.pdb
+C:\Projects\ECE_461\SensorGUI\SensorGUI\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\ECE_461\SensorGUI\SensorGUI\bin\Debug\Newtonsoft.Json.pdb
+C:\Projects\ECE_461\SensorGUI\SensorGUI\bin\Debug\Newtonsoft.Json.xml
+C:\Projects\ECE_461\SensorGUI\SensorGUI\obj\Debug\SensorGUI.csproj.CopyComplete

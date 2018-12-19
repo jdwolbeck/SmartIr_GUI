@@ -4,24 +4,27 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SensorGUI
 {
     class ValueHolder
     {
-        public ValueHolder() // Constructor
+        private int count;
+        private float average;
+        private float total;
+
+        public ValueHolder()
         {
             count = 0;
             average = 0;
             total = 0;
         }
 
-        public void IncrementCount()
+        public int Count
         {
-            if (count == 28)
-                count = 28;
-            else
-                count++;
+            get { return count; }
+            set { count = value; }
         }
 
         public float GetAverage()
@@ -44,14 +47,22 @@ namespace SensorGUI
 
         public void CalculateTotal(string[] s)
         {
+            int temp = 0;
             for (int i = 0; i < count; i++)
             {
-                total += Int32.Parse(s[i]);
+                try
+                {
+                    if (Int32.TryParse(s[i], out temp))
+                        total += temp;
+                    else
+                        throw new Exception("Invalid string.");
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Execption: " + ex, "ValueHolder Class error");
+                }
+                
             }
         }
-
-        public int count;
-        public float average;
-        public float total;
     }
 }
