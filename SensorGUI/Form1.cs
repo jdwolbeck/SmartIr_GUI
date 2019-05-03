@@ -10,10 +10,46 @@ namespace SensorGUI
         private ValueHolder value_holder = new ValueHolder();
         private Website web_connect = new Website();
         private string data = String.Empty;
-        private string[] adc_values = new string[3];
+        private string[] adc_values = new string[4];
         private const string WEBSITE_URL = "http://sensordata.tk:90/api/Sensor";
         private const char EOT_CHAR = '|';
 
+        private delegate void SafeCallDelegate(int hour, int minute);
+        private Thread thread;
+        private void SetTime()
+        {
+            DateTime time;
+            while (true)
+            {
+                time = DateTime.Now;
+                int hour = time.Hour;
+                int minute = time.Minute;
+                SafeTimerMethod(time.Hour, time.Minute);
+            }
+        }
+
+        private void SafeTimerMethod(int hour, int minute)
+        {
+            if(cb_time_hour.InvokeRequired)
+            {
+                var d = new SafeCallDelegate(SafeTimerMethod);
+                Invoke(d, new object[] { hour, minute });
+            }
+            else
+            {
+                if(hour.ToString() == cb_time_hour.Text && minute.ToString() == cb_time_minute.Text)
+                {
+                    tb_timer.Text = "Sending (UART): \r\nSTART_WATER_" + cb_duration.Text + EOT_CHAR;
+                    uart.Write("START_WATER_" + cb_duration.Text + EOT_CHAR);
+                    StopThread();
+                }
+            }
+        }
+
+        private void StopThread()
+        {
+            thread.Abort();
+        }
 
         public Form1()
         {
@@ -26,6 +62,7 @@ namespace SensorGUI
             {
                 cb_connect.Items.Add(s);
             }
+            thread = new Thread(new ThreadStart(SetTime));
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -36,11 +73,6 @@ namespace SensorGUI
 
         private void uart_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            //Thread.Sleep(100);
-            //data = uart.ReadExisting();
-
-            //Invoke(new EventHandler(uart_DataParser));
-            //Trial code
             data = data + uart.ReadExisting();
             if (data.Contains(EOT_CHAR.ToString()))
                 Invoke(new EventHandler(uart_DataParser));
@@ -61,6 +93,7 @@ namespace SensorGUI
             tb_database1.Text = adc_values[0] + "\r\n" + tb_database1.Text;
             tb_database2.Text = adc_values[1] + "\r\n" + tb_database2.Text;
             tb_database3.Text = adc_values[2] + "\r\n" + tb_database3.Text;
+            tb_database4.Text = adc_values[3] + "\r\n" + tb_database4.Text;
 
             data = String.Empty;
 
@@ -83,6 +116,8 @@ namespace SensorGUI
             rows = value_holder.ParseTextbox(tb_database3.Text);
             value_holder.CalculateTotal(rows);
             tb_average3.Text = value_holder.GetAverage().ToString();
+
+            send_website_data();
         }
 
         private void btn_connect_Click(object sender, EventArgs e)
@@ -108,7 +143,7 @@ namespace SensorGUI
             }
         }
 
-        private void btn_website_Click(object sender, EventArgs e)
+        private void send_website_data()
         {
             try
             {
@@ -130,12 +165,27 @@ namespace SensorGUI
                 else
                     dataReadings.Temperature = temp;
                 
-                tb_website_response.Text = web_connect.SendWebsiteData(WEBSITE_URL, JsonConvert.SerializeObject(dataReadings));
+                web_connect.SendWebsiteData(WEBSITE_URL, JsonConvert.SerializeObject(dataReadings));
             }
             catch(Exception ex)
             {
                 MessageBox.Show("Exception caught: " + ex.Message, "Failed to send to website");
             }   
+        }
+
+        private void btn_set_time_Click(object sender, EventArgs e)
+        {
+            if(thread.ThreadState == ThreadState.Unstarted)
+            {
+                thread.Start();
+                tb_timer.Text = "Timer started!";
+            }
+            else if(thread.ThreadState == ThreadState.Aborted)
+            {
+                thread = new Thread(new ThreadStart(SetTime));
+                thread.Start();
+                tb_timer.Text = "Timer reset!";
+            }
         }
     }
 }
